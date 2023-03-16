@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package billing;
+
+option csharp_namespace = "Billing";
+
+service Billing {
+  rpc ListUsers (None) returns (stream UserProfile);
+  rpc CoinsEmission (EmissionAmount) returns (Response);
+  rpc MoveCoins (MoveCoinsTransaction) returns (Response);
+  rpc LongestHistoryCoin (None) returns (Coin);
+}
+
+message None {
+}
+
+message UserProfile {
+  string name = 1;
+  int64 rating = 2;
+  optional int64 amount = 3;
+}
+
+message MoveCoinsTransaction {
+  string src_user = 1;
+  string dst_user = 2;
+  int64 amount = 3;
+}
+
+message Response {
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_OK = 1;
+    STATUS_FAILED = 2;
+  }
+
+  Status status = 1;
+  string comment = 2;
+}
+
+message EmissionAmount {
+  int64 amount = 1;
+}
+
+message Coin {
+  int64 id = 1;
+  string history = 2;
+}
